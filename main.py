@@ -1,13 +1,9 @@
-from msilib.schema import RadioButton
 from tkinter import *
 import tkinter.ttk as ttk
-from turtle import right
 import xml.dom.minidom
 import urllib.request
 import matplotlib
 import matplotlib.pyplot as plt
-from tkinter import *
-from tkinter.ttk import Combobox,Radiobutton
 import datetime
 from datetime import date
 import numpy as np
@@ -41,8 +37,6 @@ tab2 = ttk.Frame(tab_control)
 tab_control.add(tab1, text="Калькулятор валют")
 tab_control.add(tab2, text="Динамика курса")
 
-message = StringVar()
-
 combo1 = ttk.Combobox(tab1, values=a)
 combo1.grid(column=0, row=0)
 
@@ -51,7 +45,6 @@ combo2.grid(column=0, row=3)
 
 lbl = Entry(tab1)
 lbl.grid(column=3, row=0)
-
 
 lab = Label(tab1, text="")
 lab.grid(row=3, column=4)
@@ -69,22 +62,6 @@ def konvert():
     res = f1 * f3 / f2
 
     lab.config(text=res)
-
-    return res
-
-
-def konvert():
-    c = combo1.get()
-    index1 = a.index(c)
-    d = combo2.get()
-    index2 = a.index(d)
-    gd = lbl.get()
-    f3 = float(gd)
-    f1 = float(b[index1].replace(",", "."))
-    f2 = float(b[index2].replace(",", "."))
-    res = f1 * f3 / f2
-    lab = Label(tab1, text=res)
-    lab.grid(row=3, column=4)
 
     return res
 
