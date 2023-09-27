@@ -48,13 +48,25 @@ class TestCurrencyConversion(unittest.TestCase):
         # Assert: Проверяем, что функция вернула ожидаемый результат
         expected_result = 95.0
         self.assertEqual(result, expected_result)
-        source_currency = "USD"
-        target_currency = "GBP"
-        # Act: Вызываем тестируемую функцию
-        result = convert_currency(source_currency, target_currency, amount, currency_rates)
-        # Assert: Проверяем, что функция вернула ожидаемый результат
-        expected_result = 110.0
-        self.assertEqual(result, expected_result)
+
+    def test_usd_to_eur_conversion(self):
+            # Arrange: Устанавливаем необходимые предусловия и входные данные
+            source_currency = "USD"
+            target_currency = "GBP"
+            amount = 100.0
+            currency_rates = {
+                "USD": "1.0",
+                "EUR": "0.95",
+                "RUB": "98.0",
+                "GBP": "1.1"
+            }
+
+
+            # Act: Вызываем тестируемую функцию
+            result = convert_currency(source_currency, target_currency, amount, currency_rates)
+            # Assert: Проверяем, что функция вернула ожидаемый результат
+            expected_result = 110.0
+            self.assertEqual(result, expected_result)
 
 
 if __name__ == '__main__':
