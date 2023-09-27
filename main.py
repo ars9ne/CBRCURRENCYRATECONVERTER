@@ -49,7 +49,7 @@ class TestCurrencyConversion(unittest.TestCase):
         expected_result = 95.0
         self.assertEqual(result, expected_result)
 
-    def test_usd_to_eur_conversion(self):
+    def test_usd_to_gbp_conversion(self):
             # Arrange: Устанавливаем необходимые предусловия и входные данные
             source_currency = "USD"
             target_currency = "GBP"
