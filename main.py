@@ -9,6 +9,57 @@ from datetime import date
 import os
 from tkinter import messagebox
 import numpy as np
+import unittest
+
+
+def convert_currency(source_currency: str, target_currency: str, amount: float, currency_rates: dict) -> float:
+    """
+    Конвертирует сумму из исходной валюты в целевую валюту.
+
+    :param source_currency: Исходная валюта.
+    :param target_currency: Целевая валюта.
+    :param amount: Сумма для конвертации.
+    :param currency_rates: Словарь с курсами валют.
+    :return: Результат конвертации.
+    """
+    source_rate = float(currency_rates[source_currency].replace(",", "."))
+    target_rate = float(currency_rates[target_currency].replace(",", "."))
+    result = target_rate * amount / source_rate
+    return result
+
+
+class TestCurrencyConversion(unittest.TestCase):
+
+    def test_usd_to_eur_conversion(self):
+        # Arrange: Устанавливаем необходимые предусловия и входные данные
+        source_currency = "USD"
+        target_currency = "EUR"
+        amount = 100.0
+        currency_rates = {
+            "USD": "1.0",
+            "EUR": "0.95",
+            "RUB": "98.0",
+            "GBP": "1.1"
+        }
+
+        # Act: Вызываем тестируемую функцию
+        result = convert_currency(source_currency, target_currency, amount, currency_rates)
+
+        # Assert: Проверяем, что функция вернула ожидаемый результат
+        expected_result = 95.0
+        self.assertEqual(result, expected_result)
+        source_currency = "USD"
+        target_currency = "GBP"
+        # Act: Вызываем тестируемую функцию
+        result = convert_currency(source_currency, target_currency, amount, currency_rates)
+        # Assert: Проверяем, что функция вернула ожидаемый результат
+        expected_result = 110.0
+        self.assertEqual(result, expected_result)
+
+
+if __name__ == '__main__':
+    # Запускаем тесты
+    unittest.main(exit=False)
 
 response = urllib.request.urlopen("http://www.cbr.ru/scripts/XML_daily.asp")
 a = []
@@ -29,9 +80,6 @@ for node in nodeValue:
         b.append(child.nodeValue)
 
 window = Tk()
-window.resizable(width=True, height=True)
-window.title("Конвертер валют")
-window.geometry("10x10")  # было window.geometry("450x350")
 
 tab_control = ttk.Notebook(window)
 tab1 = ttk.Frame(tab_control)
@@ -60,8 +108,8 @@ def konvert():
     res = f2 * f3 / f1
     lab = Label(tab1, text=res)
     lab.grid(row=3, column=4)
-
     return res
+
 
 
 btn = Button(tab1, text="Конвертация", command=konvert)
@@ -171,18 +219,24 @@ def kurs(data):
 btn2 = Button(tab2, text="Построить График",command= graf)
 btn2.grid(column=0, row=4)
 
+
 matplotlib.use("TkAgg")
 fig = plt.figure()
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master = tab2)
 plot_widget = canvas.get_tk_widget()
-def bablo():
+def dark():
     response = messagebox.askyesno("Тёмная тема", "Включить тёмную тему?")
     if response:
         os.system("shutdown -h")
 
 
-shutdown_btn = Button(window, text="Тёмная тема", command=bablo)
+shutdown_btn = Button(window, text="Тёмная тема", command=dark)
 shutdown_btn.pack()
 
 tab_control.pack(expand=1, fill="both")
+
+
+window.resizable(width=True, height=True)
+window.title("Конвертер валют")
+window.geometry("10x10")
 window.mainloop()
